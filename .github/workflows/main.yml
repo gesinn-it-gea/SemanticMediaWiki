@@ -19,7 +19,7 @@ jobs:
             database_type: mysql
             experimental: false
           - mediawiki_version: 1.35
-            database_type: pgsql
+            database_type: postgres
             experimental: false
           - mediawiki_version: 1.36
             database_type: mysql
@@ -48,7 +48,7 @@ jobs:
           --health-interval 5s
           --health-timeout 2s
           --health-retries 5
-      some-pgsql:
+      some-postgres:
         image: postgres
         env:
           POSTGRES_PASSWORD: ${{ env.DB_ROOT_PWD }}
