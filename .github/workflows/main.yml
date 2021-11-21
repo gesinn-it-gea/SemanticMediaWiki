@@ -40,13 +40,16 @@ jobs:
         image: mariadb:latest
         env:
           MARIADB_ROOT_PASSWORD: ${{ env.DB_ROOT_PWD }}
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
-      - name: Backup LocalSettings
+      - name: Remove LocalSettings
         run: |
-          cd ${{ env.MW_INST_PATH }}
-          mv LocalSettings.php LocalSettings.php.orig
-          sleep 10
+          rm ${{ env.MW_INST_PATH }}/LocalSettings.php
 
       - name: Reinstall MediaWiki
         run: >
@@ -63,6 +66,14 @@ jobs:
           --dbpass=wiki
           --dbpath=/var/www/data
           wiki WikiSysop
+
+      - name: Enable Debug Output
+        run: |
+          echo 'error_reporting(E_ALL| E_STRICT);' >> ${{ env.MW_INST_PATH }}/LocalSettings.php
+          echo 'ini_set("display_errors", 1);' >> ${{ env.MW_INST_PATH }}/LocalSettings.php
+          echo '$wgShowExceptionDetails = true;' >> ${{ env.MW_INST_PATH }}/LocalSettings.php
+          echo '$wgDevelopmentWarnings = true;' >> ${{ env.MW_INST_PATH }}/LocalSettings.php
+          echo '$wgEnableJavaScriptTest = true;' >> ${{ env.MW_INST_PATH }}/LocalSettings.php
 
       - name: Checkout Extension
         uses: actions/checkout@v2
