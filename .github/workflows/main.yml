@@ -46,6 +46,7 @@ jobs:
         run: |
           cd ${{ env.MW_INST_PATH }}
           mv LocalSettings.php LocalSettings.php.orig
+          sleep 10
 
       - name: Reinstall MediaWiki
         run: >
