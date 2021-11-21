@@ -43,7 +43,9 @@ jobs:
 
     steps:
       - name: Backup LocalSettings
-        run: mv LocalSettings.php LocalSettings.php.orig
+        run: |
+          cd ${{ env.MW_INST_PATH }}
+          mv LocalSettings.php LocalSettings.php.orig
 
       - name: Reinstall MediaWiki
         run: >
