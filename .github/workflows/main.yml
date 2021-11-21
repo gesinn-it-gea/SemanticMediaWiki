@@ -41,9 +41,9 @@ jobs:
         env:
           MARIADB_ROOT_PASSWORD: ${{ env.DB_ROOT_PWD }}
         options: >-
-          --health-cmd pg_isready
+          --health-cmd "mysqladmin ping"
           --health-interval 5s
-          --health-timeout 5s
+          --health-timeout 2s
           --health-retries 5
 
     steps:
